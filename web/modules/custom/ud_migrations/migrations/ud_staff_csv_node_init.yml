@@ -1,5 +1,6 @@
 id: ud_staff_csv_node_init
 label: 'Import staff nodes from CSV INIT'
+migration_group: default
 
 source:
   plugin: csv
@@ -14,6 +15,47 @@ process:
       - 'Last Name'
     delimiter: ' '
 
+  field_ud_biography/value: Biography
+  field_ud_biography/format:
+    plugin: default_value
+    default_value: basic_html
+
+  field_ud_online_profiles/0/uri: Drupal
+  field_ud_online_profiles/0/title:
+    plugin: default_value
+    default_value: 'Drupal.org Profile'
+  field_ud_online_profiles/1/uri: Gitlab
+  field_ud_online_profiles/1/title:
+    plugin: default_value
+    default_value: 'Gitlab Profile'
+  field_ud_online_profiles/2/uri: Twitter
+  field_ud_online_profiles/2/title:
+    plugin: default_value
+    default_value: 'Twitter Profile'
+  
+  field_ud_start_date:
+    plugin: format_date
+    source: Date
+    from_format: 'F j, Y'
+    to_format: Y-m-d
+  
+  field_ud_office_address/address_line1:
+    plugin: default_value
+    default_value: 'Street Address'
+  field_ud_office_address/locality: City
+  field_ud_office_address/administrative_area: State
+  field_ud_office_address/postal_code: ZIP
+  field_ud_office_address/country_code: 'Country Code'
+
+  field_ud_department:
+    plugin: entity_generate
+    source: Department
+    entity_type: taxonomy_term
+    bundle: ud_department_vocabulary
+    value_key: name
+    bundle_key: vid
+
 destination:
   plugin: 'entity:node'
   default_bundle: ud_staff
+# update_existing: true
